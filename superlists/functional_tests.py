@@ -42,11 +42,18 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
+        # Теперь он набирает в текстовом поле - "Купить видеокарту"
+        # Когда он нажмёт Enter, страница обновляется, и теперь страница
+        # Содержит "2: Купить видеокарту
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Купить видеокарту') 
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+        
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Купить книгу по программированию' for row in rows)
-        )
+        self.assertIn('1: Купить книгу по программированию', [row.text for row in rows])
+        self.assertIn('2: Купить видеокарту', [row.text for row in rows])
 
         # Текстовое поле по-прежнему приглашает добавить ещё один элемент.
         # Он вводит "Написать первую программу"
