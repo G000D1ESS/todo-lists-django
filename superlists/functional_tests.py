@@ -14,6 +14,12 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        '''Подтвеждение строки в таблице списка'''
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_stat_a_list_and_retrieve_it_later(self):
         '''Тест: можно создать список и получить его позже'''
 
@@ -49,16 +55,13 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys('Купить видеокарту') 
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
-        
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Купить книгу по программированию', [row.text for row in rows])
-        self.assertIn('2: Купить видеокарту', [row.text for row in rows])
+
+        self.check_for_row_in_list_table('1: Купить книгу по программированию')
+        self.check_for_row_in_list_table('2: Купить видеокарту')
 
         # Текстовое поле по-прежнему приглашает добавить ещё один элемент.
         # Он вводит "Написать первую программу"
         self.fail('Закончить тест!')
-        ...
 
 
 if __name__ == '__main__':
