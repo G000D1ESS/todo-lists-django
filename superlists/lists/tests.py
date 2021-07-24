@@ -15,24 +15,6 @@ class HomePageTest(TestCase):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
 
-    def test_can_save_a_POST_request(self):
-        '''Тест: Можно сохранить POST-запрос'''
-        response = self.client.post('/', data={'item_text': 'A new list item'})
-        self.assertEqual(Item.objects.count(), 1)
-        new_item = Item.objects.first()
-        self.assertEqual(new_item.text, 'A new list item')
-
-    def test_redirects_after_POST(self):
-        '''Тест: переадресует после POST-запроса'''
-        response = self.client.post('/', data={'item_text': 'A new list item'})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/unique-list/')
-
-    def test_only_saves_items_when_necessary(self):
-        '''Тест: сохраняет элементы, только когда нужно'''
-        self.client.get('/')
-        self.assertEqual(Item.objects.count(), 0)
-
 
 class ItemModelTest(TestCase):
     '''Тест модели элемента списка'''
@@ -73,3 +55,19 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+
+class NewListTest(TestCase):
+    '''Тест нового списка'''
+
+    def test_can_save_a_POST_request(self):
+        '''Тест: можно сохрнаить POST-запрос'''
+        self.client.post('/lists/new', data={'item_text': 'A new list item'})
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, 'A new list item')
+
+    def test_redirects_after_POST(self):
+        '''Тест: переадресация полсле POST-запроса'''
+        response = self.client.post('/lists/new', data={'item_text': 'A new list item'})
+        self.assertRedirects(response, '/lists/unique-list/')
+
