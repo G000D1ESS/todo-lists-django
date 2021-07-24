@@ -90,7 +90,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser = webdriver.Chrome()
         
         # Артём посещает домашнюю страницу. Нет никаких признаков списка Семёна
-        self.browser(self.live_server_url)
+        self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Купить книгу по программированию', page_text)
 
