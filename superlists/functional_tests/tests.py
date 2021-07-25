@@ -103,11 +103,11 @@ class NewVisitorTest(LiveServerTestCase):
         # Артём получает уникальый URL-адрес
         artem_list_url = self.browser.current_url
         self.assertRegex(artem_list_url, '/lists/.+')
-        self.assertNoEqual(artem_list_url, semen_list_url)
+        self.assertNotEqual(artem_list_url, semen_list_url)
 
         # Опять-таки, нет следа от списка Семёна
         page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertNoIn('Купить книгу по программированию', page_text)
+        self.assertNotIn('Купить книгу по программированию', page_text)
         self.assertIn('Купить молоко', page_text)
 
         # Семён и Артём заканчивают свою работу со списком
