@@ -1,0 +1,22 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.2
+
+workflows:
+  sample:
+    jobs:
+      - build-and-test
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.7-browsers
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Run tests
+          working_directory: superlists
+          command: python manage.py test
