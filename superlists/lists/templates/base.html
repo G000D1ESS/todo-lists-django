@@ -7,24 +7,25 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>To-Do lists</title>
 		<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{% static 'css/base.css' %}" rel="stylesheet">
     </head>
     <body>
-		<div class="container">
+		<div class="container p-3">
 			
 			<div class="row">
-				<div class="col">
+				<div class="col bg-light rounded-3 p-5">
 					<div class="text-center">
-						<h1>{% block header_text %}{% endblock %}</h1>
+						<h1 class="fw-bold">{% block header_text %}{% endblock %}</h1>
 						<form method="POST" action="{% block form_action %}{% endblock %}">
-							<input name="item_text" id="id_new_item" placeholder="Enter a to-do item" />
-							{% csrf_token %}
+							<input name="item_text" id="id_new_item" class="form-control form-control-lg" placeholder="Enter a to-do item" />
+							{% csrf_token %}	
 						</form>
 					</div>
 				</div>
 			</div>
 			
 			<div class="row">
-				<div class="col-md-6 col-md-offset-3">
+				<div class="col">
 					{% block table %}
 					{% endblock %}
 				</div>
