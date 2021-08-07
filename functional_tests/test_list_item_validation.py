@@ -20,7 +20,7 @@ class ItemValidationTest(FunctionalTest):
         ))
 
         # Он пробует снова, но теперь уже с текстом
-        self.browser.find_element_by_id('id_new_item').send_keys('Купить молока')
+        self.browser.find_element_by_id('id_new_item').send_keys('Купить молокo')
         self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Купить молоко')
 
