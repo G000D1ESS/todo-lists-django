@@ -13,28 +13,33 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # Домашняя страница обновляется и появляется сообщение об ошибке
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "You can't have an empty list item"
+        # Бразуер перехватывает запрос и не загружает страницу со списком
+        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
+            '#id_text:invalid'    
         ))
-
+        
         # Он пробует снова, но теперь уже с текстом
         self.get_item_input_box().send_keys('Купить молоко')
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Купить молоко')
+        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
+            '#id_text:valid'    
+        ))
 
         # Как ни странно, он решает отправить второй пустой элемент списка
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # Домашняя страница обновляется и снова появляется сообщение об ошибке
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "You can't have an empty list item"
+        # И снова браузер не подчиняется 
+        self.wait_for_row_in_list_table('1: Купить молоко')
+        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
+            '#id_text:invalid'    
         ))
 
         # И он может его исправить, заполнив его текстом
         self.get_item_input_box().send_keys('Сделать чай')
+        self.wait_for(lambda: self.browser.find_elements_by_css_selector(
+            '#id_text:valid'    
+        ))
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Купить молоко')
         self.wait_for_row_in_list_table('2: Сделать чай')
