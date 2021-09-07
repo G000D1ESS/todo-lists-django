@@ -42,8 +42,8 @@ class NewVisitorTest(FunctionalTest):
         inputbox.send_keys('Купить видеокарту') 
         inputbox.send_keys(Keys.ENTER)
 
-        self.wait_for_row_in_list_table('2: Купить видеокарту')
-        self.wait_for_row_in_list_table('1: Купить книгу по программированию')
+        self.wait_for_row_in_list_table('1: Купить видеокарту')
+        self.wait_for_row_in_list_table('2: Купить книгу по программированию')
 
         # Семён завершает работу и ложиться спать
     
