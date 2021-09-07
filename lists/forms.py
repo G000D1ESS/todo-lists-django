@@ -1,7 +1,11 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from lists.models import Item
 
+
 EMPTY_ITEM_ERROR = 'You can\'t have an empty list item'
+DUPLICATE_ITEM_ERROR = 'You\'ve already got this in your list'
 
 
 class ItemForm(forms.models.ModelForm):
@@ -23,3 +27,20 @@ class ItemForm(forms.models.ModelForm):
         error_messages = {
             'text': {'required': EMPTY_ITEM_ERROR}, 
         }
+
+
+class ExistingListItemForm(ItemForm):
+    '''Форма для элемента существующего списка'''
+
+    def __init__(self, for_list, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.instance.list = for_list
+
+    def validate_unique(self):
+        '''Проверка уникальности'''
+        try:
+            self.instance.validate_unique()
+        except ValidationError as error:
+            error.error_dict = {'text': [DUPLICATE_ITEM_ERROR]}
+            self._update_errors(error)
+
