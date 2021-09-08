@@ -3793,7 +3793,7 @@
       beg += tmp.open;
       end += tmp.close;
 
-      if (!!~str.indexOf(tmp.close)) {
+      if (~str.indexOf(tmp.close)) {
         str = str.replace(tmp.rgx, tmp.close + tmp.open);
       }
     }
