@@ -1,5 +1,7 @@
 import re
+import time
 import os
+import sys
 
 from django.core import mail
 from selenium.webdriver.common.keys import Keys
@@ -40,6 +42,9 @@ class LoginTest(FunctionalTest):
 
         # Семён переходит по ссылке
         self.browser.get(url)
+
+
+        # time.sleep(60)
 
         # Теперь он зарегистрирован в системе
         self.wait_for(
