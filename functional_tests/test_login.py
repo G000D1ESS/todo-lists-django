@@ -1,7 +1,5 @@
 import re
-import time
 import os
-import sys
 
 from django.core import mail
 from selenium.webdriver.common.keys import Keys
@@ -43,12 +41,19 @@ class LoginTest(FunctionalTest):
         # Семён переходит по ссылке
         self.browser.get(url)
 
-
-        # time.sleep(60)
-
         # Теперь он зарегистрирован в системе
         self.wait_for(
             lambda: self.browser.find_element_by_link_text('Log out')
         )
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertIn(TEST_EMAIL, navbar.text)
+
+        # Теперь он решает выйти из системы
+        self.browser.find_element_by_link_text('Log out').click()
+
+        # Он вышел из системы
+        self.wait_for(
+            lambda: self.browser.find_element_by_name('email')
+        )
+        navbar = self.browser.find_element_by_css_selector('.navbar')
+        self.assertNotIn(TEST_EMAIL, navbar.text)
