@@ -77,6 +77,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'superlists.wsgi.application'
 
+LOGGING = {
+    'version': 1,
+    'disable_exitsing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        },
+    },
+    'root': {'level': 'INFO'},
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
