@@ -39,3 +39,44 @@ class MyListsTest(FunctionalTest):
         self.create_pre_authenticated_session(email)
         self.browser.get(self.live_server_url)
         self.wait_to_be_logged_in(email)
+
+        # Он открывает домашнюю страницу и начинает новый список
+        self.browser.get(self.live_server_url)
+        self.add_list_item('Купить машину')
+        self.add_list_item('Проверить почту')
+        first_list_url = self.browser.current_url
+
+        # Он замечает сслыку на "Мои списки"
+        self.browser.find_element_by_link_text('My lists').click()
+
+        # Он видит, что его список находиться там и он
+        # назван на основе первого эдлемента
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text('Купить машину')
+        )
+        self.browser.find_element_by_link_text('Купить машину').click()
+        self.wait_for(
+            lambda: self.assertEqual(self.browser.current_url, first_list_url)
+        )
+
+        # Он решает начать ещё один список
+        self.browser.get(self.live_server_url)
+        self.add_list_item('Помыть гараж')
+        second_list_url = self.browser.current_url
+
+        # Под заголовком "Мои списки" появляется новый список
+        self.browser.find_element_by_link_text('My lists').click()
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text('Помыть гараж')
+        )
+        self.find_element_by_link_text('Помыть гараж').click()
+        self.wait_for(
+            lambda: self.assertEqual(self.browser.current_url, second_list_url)
+        )
+
+        # Он выходит из системы и списки исчезают
+        self.browser.find_element_by_link_text('Log our').click()
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_elements_by_link_text('My lists'),
+            []
+        ))
