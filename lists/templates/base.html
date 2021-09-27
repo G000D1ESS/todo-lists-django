@@ -17,6 +17,9 @@
 				<div class="container-fluid">
 					<a class="navbar-brand" href="/">Superlists</a>
 					{% if user.email %}
+						<ul class="nav navbar-nav navbar-left">
+							<li><a href="{% url 'my_lists' user.email %}">My lists</a></li>
+						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="navbar-text">Logged in as {{ user.email }}</li>
 							<li><a href="{% url 'logout' %}">Log out</a></li>
@@ -45,6 +48,7 @@
 				<div class="col bg-light rounded-3 p-5">
 					<div class="text-center">
 						<h1 class="fw-bold">{% block header_text %}{% endblock %}</h1>
+						{% block list_form %}
 						<form method="POST" action="{% block form_action %}{% endblock %}">
 							{{ form.text }}
 							{% csrf_token %}
@@ -54,6 +58,7 @@
 								</div>
 							{% endif %}
 						</form>
+						{% endblock %}
 					</div>
 				</div>
 			</div>

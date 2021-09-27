@@ -31,3 +31,7 @@ def new_list(request):
         Item.objects.create(text=request.POST['text'], list=list_)
         return redirect(list_)
     return render(request, 'home.html', {'form': form})
+
+
+def my_lists(request, email):
+    return render(request, 'my_lists.html')
