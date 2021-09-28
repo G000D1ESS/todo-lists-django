@@ -55,7 +55,6 @@ class NewListTest(TestCase):
         self.assertEqual(Item.objects.count(), 0)
 
     def test_list_owner_is_saved_if_user_is_authenticated(self):
-        '''Тест: владелец списка сохраняется, если полтзователь аутентифицирован'''
         user = User.objects.create(email='test@example.com')
         self.client.force_login(user)
         self.client.post('/lists/new', data={'text': 'new item'})
@@ -170,7 +169,7 @@ class MyListsTest(TestCase):
         self.assertTemplateUsed(response, 'my_lists.html')
 
     def test_passes_correct_owner_to_tempale(self):
-        '''Тест: передается правильный владелец в шаблон'''
+        '''Тест: передаётся правильный владелец в шаблон'''
         User.objects.create(email='wrong@owner.com')
         correct_user = User.objects.create(email='correct@owner.com')
         response = self.client.get('/lists/users/correct@owner.com/')
