@@ -4,6 +4,7 @@
     <head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>To-Do lists</title>
 		<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -12,10 +13,42 @@
     <body>
 		<div class="container p-3">
 			
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/">Superlists</a>
+					{% if user.email %}
+						<ul class="nav navbar-nav navbar-left">
+							<li><a href="{% url 'my_lists' user.email %}">My lists</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="navbar-text">Logged in as {{ user.email }}</li>
+							<li><a href="{% url 'logout' %}">Log out</a></li>
+						</ul>
+					{% else %}
+						<form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
+							<span>Enter email to log in:</span>
+							<input class="form-control" name="email" type="text" />
+							{% csrf_token %}
+						</form>
+					{% endif %}
+				</div>
+			</nav>
+
+			{% if messages %}
+				<div class="row">
+					<div class="col">
+						{% for message in messages %}
+							<div class="alert alert-{{message.level_tag}}">{{ message }}</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+
 			<div class="row">
 				<div class="col bg-light rounded-3 p-5">
 					<div class="text-center">
 						<h1 class="fw-bold">{% block header_text %}{% endblock %}</h1>
+						{% block list_form %}
 						<form method="POST" action="{% block form_action %}{% endblock %}">
 							{{ form.text }}
 							{% csrf_token %}
@@ -25,6 +58,7 @@
 								</div>
 							{% endif %}
 						</form>
+						{% endblock %}
 					</div>
 				</div>
 			</div>
@@ -35,7 +69,13 @@
 					{% endblock %}
 				</div>
 			</div>
-
+			
+			<div class="row">
+				<div class="col">
+					{% block extra_content %}
+					{% endblock %}
+				</div>
+			</div>
 		</div>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

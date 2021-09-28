@@ -23,9 +23,7 @@ class ItemValidationTest(FunctionalTest):
         ))
         
         # Он пробует снова, но теперь уже с текстом
-        self.get_item_input_box().send_keys('Купить молоко')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Купить молоко')
+        self.add_list_item('Купить молоко')
         self.wait_for(lambda: self.browser.find_elements_by_css_selector(
             '#id_text:valid'    
         ))
@@ -52,9 +50,7 @@ class ItemValidationTest(FunctionalTest):
         '''Тест: нельзя добавлять повторяющиеся элементы'''
         # Семён открывает домашнюю страницу и начинает новый список
         self.browser.get(self.live_server_url)
-        self.get_item_input_box().send_keys('Купить сливочное масло')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Купить сливочное масло')
+        self.add_list_item('Купить сливочное масло')
 
         # Он случайно пытается ввести повторяющийся элемент
         self.get_item_input_box().send_keys('Купить сливочное масло')
@@ -70,9 +66,7 @@ class ItemValidationTest(FunctionalTest):
         '''Тест: сообщение об ошибке очищается при вводе'''
         # Семён начинает список и вызывает ошибку валидации
         self.browser.get(self.live_server_url)
-        self.get_item_input_box().send_keys('Посмотреть и купить рыбов')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Посмотреть и купить рыбов')
+        self.add_list_item('Посмотреть и купить рыбов')
         self.get_item_input_box().send_keys('Посмотреть и купить рыбов')
         self.get_item_input_box().send_keys(Keys.ENTER)
 

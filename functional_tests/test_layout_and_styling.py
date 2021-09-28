@@ -17,7 +17,7 @@ class LayoutAndStylingTest(FunctionalTest):
         self.assertAlmostEqual(
             inputbox.location['x'] + inputbox.size['width']/2,
             512,
-            delta=10,
+            delta=24,
         )
 
         # Он начинает новый список и видит, что поле ввода всё ещё центрировано
@@ -28,5 +28,5 @@ class LayoutAndStylingTest(FunctionalTest):
         self.assertAlmostEqual(
             inputbox.location['x'] + inputbox.size['width']/2,
             512,
-            delta=10,
+            delta=24,
         )
