@@ -69,13 +69,13 @@ class MyListsTest(FunctionalTest):
         self.wait_for(
             lambda: self.browser.find_element_by_link_text('Помыть гараж')
         )
-        self.find_element_by_link_text('Помыть гараж').click()
+        self.browser.find_element_by_link_text('Помыть гараж').click()
         self.wait_for(
             lambda: self.assertEqual(self.browser.current_url, second_list_url)
         )
 
         # Он выходит из системы и списки исчезают
-        self.browser.find_element_by_link_text('Log our').click()
+        self.browser.find_element_by_link_text('Log out').click()
         self.wait_for(lambda: self.assertEqual(
             self.browser.find_elements_by_link_text('My lists'),
             []
